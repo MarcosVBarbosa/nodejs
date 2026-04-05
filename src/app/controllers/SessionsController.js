@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 import * as Yup from 'yup';
+
+// Models
 import UsersModel from '../models/UsersModel.js';
 import authConfig from '../../config/auth.js';
 
@@ -29,6 +31,22 @@ class SessionsController {
    *     responses:
    *       200:
    *         description: Login realizado com sucesso
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 user:
+   *                   type: object
+   *                   properties:
+   *                     id:
+   *                       type: integer
+   *                     name:
+   *                       type: string
+   *                     status:
+   *                       type: boolean
+   *                 token:
+   *                   type: string
    *       400:
    *         description: Dados inválidos
    *       401:
@@ -45,17 +63,19 @@ class SessionsController {
 
       const { name, password } = req.body;
 
+      // Buscar usuário com senha (scope definido no model)
       const user = await UsersModel.scope('withPassword').findOne({
         where: { name },
       });
 
-      if (!user) {
+      if (!user || !(await user.checkPassword(password))) {
         return res.status(401).json({ error: 'Usuário ou senha inválidos' });
       }
 
-      if (!(await user.checkPassword(password))) {
-        return res.status(401).json({ error: 'Usuário ou senha inválidos' });
-      }
+      // Gerar token JWT
+      const token = jwt.sign({ id: user.id }, authConfig.secret, {
+        expiresIn: authConfig.expiresIn,
+      });
 
       return res.json({
         user: {
@@ -63,15 +83,12 @@ class SessionsController {
           name: user.name,
           status: user.status,
         },
-        token: jwt.sign({ id: user.id }, authConfig.secret, {
-          expiresIn: authConfig.expiresIn,
-        }),
+        token,
       });
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         return res.status(400).json({ errors: error.errors });
       }
-
       console.error(error);
       return res.status(500).json({ error: 'Erro ao realizar login' });
     }

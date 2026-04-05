@@ -1,10 +1,12 @@
 import Sequelize from 'sequelize';
 import dataBaseConfig from '../config/database.js';
 
+//Controllers
 import User from '../app/models/UsersModel.js';
 import PermissionsUsers from '../app/models/PermissionsUsersModel.js';
+import Files from '../app/models/FilesModel.js';
 
-const models = [User, PermissionsUsers];
+const models = [User, PermissionsUsers, Files];
 
 class Database {
   constructor() {

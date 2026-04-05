@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
-class PermissionsUsersModel extends Model {
+class FilesModel extends Model {
   static init(sequelize) {
     super.init(
       {
@@ -8,13 +8,9 @@ class PermissionsUsersModel extends Model {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        description: {
+        path: {
           type: DataTypes.STRING,
           allowNull: true,
-        },
-        permissions: {
-          type: DataTypes.JSONB,
-          allowNull: false,
         },
         status: {
           type: DataTypes.BOOLEAN,
@@ -23,18 +19,17 @@ class PermissionsUsersModel extends Model {
       },
       {
         sequelize,
-        tableName: 'permissions_users',
+        tableName: 'files',
       }
     );
   }
 
   static associate(models) {
-    // Associação 1:N com UsersModel
     this.hasMany(models.UsersModel, {
-      foreignKey: 'permissions_user_id',
+      foreignKey: 'file_id',
       as: 'users',
     });
   }
 }
 
-export default PermissionsUsersModel;
+export default FilesModel;
