@@ -1,7 +1,7 @@
 import FilesModel from '../models/FilesModel.js';
 
 //Utils
-import { deleteFile } from '../../utils/removeFile.js';
+import { DeleteFile } from '../utils/file/DeleteFile.js';
 
 class FilesController {
   /**
@@ -240,24 +240,17 @@ class FilesController {
    */
   async destroy(req, res) {
     try {
-      // const { id } = req.params;
-      // const file = await FilesModel.findByPk(id);
+      const { id } = req.params;
+      const file = await FilesModel.findByPk(id);
 
-      // if (!file)
-      //   return res.status(404).json({ error: 'Arquivo não encontrado' });
+      if (!file)
+        return res.status(404).json({ error: 'Arquivo não encontrado' });
 
-      // // Deleta do banco primeiro
-      // await file.destroy();
+      // Deleta do banco primeiro
+      await file.destroy();
 
       // Depois tenta deletar o arquivo físico
-      await deleteFile({
-        id: 2,
-        name: 'download.jpg',
-        path: '914451171268349401535599a76e00ec.jpg',
-        status: true,
-        updatedAt: '2026-04-05T18:33:05.071Z',
-        createdAt: '2026-04-05T18:33:05.071Z',
-      });
+      await DeleteFile(file);
 
       return res.status(204).send();
     } catch (error) {

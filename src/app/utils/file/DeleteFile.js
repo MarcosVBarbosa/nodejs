@@ -7,7 +7,7 @@ import path from 'path';
  * @param {string} file.name
  * @param {Date|string} file.updatedAt
  */
-export async function deleteFile(file) {
+export async function DeleteFile(file) {
   try {
 
     if (!file?.path || !file?.updatedAt) {

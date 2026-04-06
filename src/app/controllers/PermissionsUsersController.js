@@ -5,8 +5,8 @@ import * as Yup from 'yup';
 import PermissionsUsersModel from '../models/PermissionsUsersModel.js';
 
 // Utils
-import { parseBoolean } from '../../utils/parseBoolean.js';
-import { parseDateRange } from '../../utils/parseDateRange.js';
+import { ParseBoolean } from '../utils/parsers/ParseBoolean.js';
+import { ParseDateRange } from '../utils/parsers/ParseDateRange.js';
 
 class PermissionsUsersController {
   async index(req, res) {
@@ -27,12 +27,12 @@ class PermissionsUsersController {
       const where = {};
       if (name) where.name = { [Op.iLike]: `%${name}%` };
       if (description) where.description = { [Op.iLike]: `%${description}%` };
-      if (status !== undefined) where.status = parseBoolean(status);
+      if (status !== undefined) where.status = ParseBoolean(status);
 
-      const createdRange = parseDateRange(createdBefore, createdAfter);
+      const createdRange = ParseDateRange(createdBefore, createdAfter);
       if (createdRange) where.createdAt = createdRange;
 
-      const updatedRange = parseDateRange(updatedBefore, updatedAfter);
+      const updatedRange = ParseDateRange(updatedBefore, updatedAfter);
       if (updatedRange) where.updatedAt = updatedRange;
 
       const allowedSortFields = [

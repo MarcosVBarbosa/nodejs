@@ -3,6 +3,6 @@
  * @param {string|boolean|number} value
  * @returns {boolean}
  */
-export function parseBoolean(value) {
+export function ParseBoolean(value) {
   return ['true', '1', 'yes'].includes(String(value).toLowerCase());
 }

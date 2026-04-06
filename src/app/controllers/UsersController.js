@@ -6,9 +6,9 @@ import bcrypt from 'bcrypt';
 import UsersModel from '../models/UsersModel.js';
 
 // Utils
-import { parseBoolean } from '../../utils/parseBoolean.js';
-import { parseDateRange } from '../../utils/parseDateRange.js';
-import { buildIncludes } from '../../utils/buildIncludes.js';
+import { ParseBoolean } from '../utils/parsers/ParseBoolean.js';
+import { ParseDateRange } from '../utils/parsers/ParseDateRange.js';
+import { BuildIncludes } from '../utils/sequeleze/BuildIncludes.js';
 
 /**
  * Sanitiza usuário antes de retornar
@@ -46,15 +46,15 @@ class UsersController {
 
       const where = {};
       if (name) where.name = { [Op.iLike]: `%${name}%` };
-      if (status !== undefined) where.status = parseBoolean(status);
+      if (status !== undefined) where.status = ParseBoolean(status);
       if (permissions_user_id)
         where.permissions_user_id = Number(permissions_user_id);
       if (file_id) where.file_id = Number(file_id);
 
-      const createdRange = parseDateRange(createdBefore, createdAfter);
+      const createdRange = ParseDateRange(createdBefore, createdAfter);
       if (createdRange) where.createdAt = createdRange;
 
-      const updatedRange = parseDateRange(updatedBefore, updatedAfter);
+      const updatedRange = ParseDateRange(updatedBefore, updatedAfter);
       if (updatedRange) where.updatedAt = updatedRange;
 
       const order = [];
@@ -68,7 +68,7 @@ class UsersController {
           ]);
       }
 
-      const include = buildIncludes(includelist);
+      const include = BuildIncludes(includelist);
 
       const pageNumber = Number(page) || 1;
       const pageSize = Math.min(Number(limit) || 10, 100);
@@ -104,7 +104,7 @@ class UsersController {
       if (!validateId(id))
         return res.status(400).json({ error: 'ID inválido' });
 
-      const include = buildIncludes(includelist);
+      const include = BuildIncludes(includelist);
 
       const user = await UsersModel.findByPk(id, {
         attributes: { exclude: ['password_hash'] },
@@ -129,7 +129,7 @@ class UsersController {
         password: Yup.string().required().min(8),
         status: Yup.boolean(),
         permissions_user_id: Yup.number().required(),
-        file_id: Yup.number().required(),
+        file_id: Yup.number().nullable(),
       });
 
       await schema.validate(req.body, { abortEarly: false });
@@ -140,8 +140,10 @@ class UsersController {
         name: req.body.name,
         password_hash,
         status: req.body.status ?? true,
-        permissions_user_id: req.body.permissions_user_id,
-        file_id: req.body.file_id,
+        permissions_user_id: req.body.permissions_user_id
+          ? Number(req.body.permissions_user_id)
+          : null,
+        file_id: req.body.file_id ? Number(req.body.file_id) : null
       });
 
       return res.status(201).json(sanitizeUser(user));

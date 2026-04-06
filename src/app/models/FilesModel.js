@@ -27,7 +27,7 @@ class FilesModel extends Model {
   static associate(models) {
     this.hasMany(models.UsersModel, {
       foreignKey: 'file_id',
-      as: 'users',
+      as: 'user',
     });
   }
 }

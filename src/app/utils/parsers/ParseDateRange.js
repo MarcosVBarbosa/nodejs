@@ -6,7 +6,7 @@ import { Op } from 'sequelize';
  * @param {string|Date} after - Data mínima
  * @returns {object|undefined} Objeto para Sequelize where
  */
-export function parseDateRange(before, after) {
+export function ParseDateRange(before, after) {
   const result = {};
   const isValidDate = (date) => !isNaN(new Date(date).getTime());
 

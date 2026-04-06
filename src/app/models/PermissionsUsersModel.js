@@ -32,7 +32,7 @@ class PermissionsUsersModel extends Model {
     // Associação 1:N com UsersModel
     this.hasMany(models.UsersModel, {
       foreignKey: 'permissions_user_id',
-      as: 'users',
+      as: 'user',
     });
   }
 }

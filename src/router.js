@@ -8,7 +8,7 @@ import SessionsController from './app/controllers/SessionsController.js';
 import FilesController from './app/controllers/FilesController.js';
 
 // Middleware
-import AuthMiddlware from './app/middleware/AuthMiddlware.js';
+import AuthMiddlware from './app/middleware/AuthMiddleware.js';
 
 // Config
 import multerConfig from './config/multer.js';

@@ -1,12 +1,12 @@
-import PermissionsUsersModel from '../app/models/PermissionsUsersModel.js';
-import FilesModel from '../app/models/FilesModel.js';
+import PermissionsUsersModel from '../../models/PermissionsUsersModel.js';
+import FilesModel from '../../models/UsersModel.js';
 
 /**
  * Retorna array de includes dinamicamente
  * @param {string} includelist - nomes de relacionamentos separados por vírgula
  * @returns {Array} include para Sequelize
  */
-export function buildIncludes(includelist) {
+export function BuildIncludes(includelist) {
   const includeOptions = {
     permissions: {
       model: PermissionsUsersModel,

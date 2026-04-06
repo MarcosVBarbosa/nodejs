@@ -19,7 +19,7 @@ class UsersModel extends Model {
         },
         file_id: {
           type: DataTypes.INTEGER,
-          allowNull: false,
+          allowNull: true,
         },
         status: {
           type: DataTypes.BOOLEAN,

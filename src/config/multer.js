@@ -1,7 +1,7 @@
 import multer from 'multer';
 import crypto from 'crypto';
 import { extname } from 'path';
-import { getUploadPath } from '../utils/uploadPath.js';
+import { getUploadPath } from '../app/utils/file/UploadPath.js';
 
 export default {
   storage: multer.diskStorage({
