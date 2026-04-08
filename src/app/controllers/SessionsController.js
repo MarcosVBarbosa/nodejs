@@ -72,10 +72,17 @@ class SessionsController {
       });
 
       // 🍪 salva em cookie httpOnly
+      // res.cookie('refresh_token', refreshToken, {
+      //   httpOnly: true,
+      //   secure: true,
+      //   sameSite: 'strict',
+      // });
+
       res.cookie('refresh_token', refreshToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
+        secure: true, // obrigatório (HTTPS)
+        sameSite: 'none', // ✅ ESSENCIAL
+        path: '/', // recomendado
       });
 
       return res.json({
@@ -167,10 +174,17 @@ class SessionsController {
       });
 
       // 🍪 atualiza cookie
+      // res.cookie('refresh_token', newRefreshToken, {
+      //   httpOnly: true,
+      //   secure: true,
+      //   sameSite: 'strict',
+      // });
+
       res.cookie('refresh_token', newRefreshToken, {
         httpOnly: true,
-        secure: true,
-        sameSite: 'strict',
+        secure: true, // obrigatório (HTTPS)
+        sameSite: 'none', // ✅ ESSENCIAL
+        path: '/', // recomendado
       });
 
       return res.json({
