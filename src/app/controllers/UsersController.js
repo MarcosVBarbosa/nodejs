@@ -13,9 +13,6 @@ import { BuildIncludes } from '../utils/sequelize/BuildIncludes.js';
 /**
  * Sanitiza usuário antes de retornar
  */
-/**
- * Sanitiza usuário antes de retornar
- */
 function sanitizeUser(user) {
   // Se for instância do Sequelize, pega os dados
   const rawUser = user.toJSON ? user.toJSON() : user;
