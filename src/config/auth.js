@@ -1,5 +1,5 @@
 export default {
   refreshExpiresIn: 7,
   secret: '1234',
-  expiresIn: '20s',
+  expiresIn: '20m',
 };
