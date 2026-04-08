@@ -1,33 +1,34 @@
 import RolesModel from '../../models/RolesModel.js';
-import FilesModel from '../../models/UsersModel.js';
+import FilesModel from '../../models/FilesModel.js';
 
-/**
- * Retorna array de includes dinamicamente
- * @param {string} includelist - nomes de relacionamentos separados por vírgula
- * @returns {Array} include para Sequelize
- */
 export function BuildIncludes(includelist) {
+  if (!includelist) {
+    return [];
+  }
+
   const includeOptions = {
-    roles: {
+    role: {
       model: RolesModel,
       as: 'roles',
-      attributes: ['id', 'name', 'permissions'],
+      attributes: ['id', 'name', 'permissions', 'description', 'status'],
       required: false,
     },
     file: {
       model: FilesModel,
-      as: 'files',
-      attributes: ['id', 'name', 'path'],
+      as: 'file',
+      attributes: ['id', 'name', 'path', 'url'],
       required: false,
     },
   };
 
   const include = [];
-  if (includelist) {
-    includelist.split(',').forEach((key) => {
-      const item = key.trim();
-      if (includeOptions[item]) include.push(includeOptions[item]);
-    });
-  }
+  const items = includelist.split(',').map((item) => item.trim().toLowerCase());
+
+  items.forEach((key) => {
+    if (includeOptions[key]) {
+      include.push(includeOptions[key]);
+    }
+  });
+
   return include;
 }

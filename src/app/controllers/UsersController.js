@@ -13,11 +13,48 @@ import { BuildIncludes } from '../utils/sequelize/BuildIncludes.js';
 /**
  * Sanitiza usuário antes de retornar
  */
+/**
+ * Sanitiza usuário antes de retornar
+ */
 function sanitizeUser(user) {
-  const { id, name, username, status, role_id, file_id } = user;
-  return { id, name, username, status, role_id, file_id };
-}
+  // Se for instância do Sequelize, pega os dados
+  const rawUser = user.toJSON ? user.toJSON() : user;
 
+  // Monta o objeto base
+  const result = {
+    id: rawUser.id,
+    name: rawUser.name,
+    username: rawUser.username,
+    status: rawUser.status,
+    role_id: rawUser.role_id,
+    file_id: rawUser.file_id,
+    created_at: rawUser.created_at,
+    updated_at: rawUser.updated_at,
+  };
+
+  // Adiciona roles se existir (vem do include)
+  if (rawUser.roles) {
+    result.roles = {
+      id: rawUser.roles.id,
+      name: rawUser.roles.name,
+      permissions: rawUser.roles.permissions,
+      description: rawUser.roles.description,
+      status: rawUser.roles.status,
+    };
+  }
+
+  // Adiciona file se existir (vem do include)
+  if (rawUser.file) {
+    result.file = {
+      id: rawUser.file.id,
+      name: rawUser.file.name,
+      path: rawUser.file.path,
+      url: rawUser.file.url,
+    };
+  }
+
+  return result;
+}
 /**
  * Valida se ID é um número
  */
