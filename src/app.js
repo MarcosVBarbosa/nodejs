@@ -18,7 +18,7 @@ class App {
   middlewares() {
     this.server.use(
       cors({
-        origin: 'http://localhost:5173',
+        origin: 'http://localhost:5173/',
         credentials: true,
       })
     );
@@ -34,4 +34,4 @@ class App {
 }
 
 export default new App().server;
-``
+``;
