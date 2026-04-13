@@ -94,7 +94,7 @@ class SessionsController {
           id: user.id,
           name: user.name,
           username: user.username,
-          role: user.roles.permissions,
+          role: user.roles.crud,
           file_id: user.file_id,
           status: user.status,
         },
